@@ -12,13 +12,8 @@ public class UltraText extends UltraElement {
     public String text;
     public boolean shadow;
     public boolean centered;
-    QuadWindow parent;
 
     public UltraText(String text, Vector2f pos1, boolean shadow, boolean centered) {
-        new UltraText(text, pos1, shadow, centered, null);
-    }
-
-    public UltraText(String text, Vector2f pos1, boolean shadow, boolean centered, QuadWindow parent) {
         TextRenderer t = MinecraftClient.getInstance().textRenderer;
         int textWidth = t.getWidth(ColorUtils.chat(text));
         this.pos1 = pos1;
@@ -27,8 +22,6 @@ public class UltraText extends UltraElement {
         this.centered = centered;
         this.shadow = shadow;
         this.text = text;
-        this.parent = parent;
-        parent.children.add(this);
     }
 
     @Override

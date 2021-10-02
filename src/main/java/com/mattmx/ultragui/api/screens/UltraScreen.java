@@ -1,5 +1,6 @@
 package com.mattmx.ultragui.api.screens;
 
+import com.mattmx.ultragui.api.objects.QuadWindow;
 import com.mattmx.ultragui.api.primatives.UltraElement;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
@@ -13,6 +14,12 @@ public abstract class UltraScreen {
     protected void init(MatrixStack matrices) {
         for (UltraElement element : elements) {
             element.init(matrices);
+            if (element instanceof QuadWindow) {
+                QuadWindow q = (QuadWindow) element;
+                for (UltraElement c : q.children) {
+                    c.init(matrices);
+                }
+            }
         }
     }
 

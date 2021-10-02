@@ -25,34 +25,57 @@ public abstract class UltraElement extends DrawableHelper {
     public Vector4f color;
     public double mouseX;
     public double mouseY;
+    public Runnable onUnHover;
+    public Runnable onHover;
+    public Runnable onMouseDown;
+    public Runnable onMouseUp;
+    public Runnable onDrag;
+    public Runnable onRender;
+    public Runnable onMove;
 
     protected abstract void draw(MatrixStack matrices);
-
-    // MOUSE DOWN EVENT
-    public void onMouseDown() {
-    }
-
-    // MOUSE RELEASE EVENT
-    public void onMouseUp() {
-    }
-
-    // MOUSE DOWN EVENT
-    public void onDrag() {
-    }
-
-    public void onUnHover() {
-    }
-
-    // MOUSE IS HOVERED
-    public void onHover() {
-    }
 
     // MOUSE HANDLE (HANDLE isHovered)
     public void handleMouse() {
     }
+    public void onMouseDown() {
+        if (onMouseDown == null) return;
+        Thread click = new Thread(onMouseDown);
+        click.start();
+    }
 
-    // RENDER EVENT
+    public void onMouseUp() {
+        if (onMouseUp == null) return;
+        Thread up = new Thread(onMouseUp);
+        up.start();
+    }
+
+    public void onHover() {
+        if (onHover == null) return;
+        Thread hover = new Thread(onHover);
+        hover.start();
+    }
+
+    public void onUnHover() {
+        if (onUnHover == null) return;
+        new Thread(onUnHover).start();
+    }
+
     public void onRender() {
+        if (onRender == null) return;
+        Thread render = new Thread(onRender);
+        render.start();
+    }
+
+    public void onDrag() {
+        if (onDrag == null) return;
+        Thread dar = new Thread(onDrag);
+        dar.start();
+    }
+
+    public void onMove() {
+        if (onMove == null) return;
+        new Thread(onMove).start();
     }
 
     public final void init(MatrixStack matrices) {
@@ -91,6 +114,7 @@ public abstract class UltraElement extends DrawableHelper {
             pos2 = new Vector2f((float) (pos2.getX() + movX),
                                 (float) (pos2.getY() + movY));
             oldpos1 = new Vector2f((float) mouseX, (float) mouseY);
+            onMove();
             return new Vector2f((float)movX, (float)movY);
     }
 
@@ -99,11 +123,13 @@ public abstract class UltraElement extends DrawableHelper {
                 this.pos1.getY() + change.getY());
         this.pos2 = new Vector2f(this.pos2.getX() + change.getX(),
                 this.pos2.getY() + change.getY());
+        //this.onMove();
     }
 
     public void updateChildrenPos(Vector2f change) {
         for (UltraElement e : children) {
             e.changePos(change);
+            //e.onMove();
         }
     }
 }

@@ -1,8 +1,10 @@
 package com.mattmx.ultragui.api.utils;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.util.math.Matrix4f;
 
 import java.util.Arrays;
@@ -74,5 +76,21 @@ public class DrawUtils {
         BufferRenderer.draw(bufferBuilder);
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
+    }
+
+    public static Vector2f isOffScreen(Vector2f pos1, Vector2f pos2) {
+        double x1 = pos1.getX();
+        double y1 = pos1.getY();
+        double x2 = pos2.getX();
+        double y2 = pos2.getY();
+        int w = MinecraftClient.getInstance().getWindow().getScaledWidth();
+        int h = MinecraftClient.getInstance().getWindow().getScaledHeight();
+        double xChange = 0;
+        double yChange = 0;
+        if (x1 < 0) xChange = -x1;
+        if (y1 < 0) yChange = -y1;
+        if (x2 > w) xChange = w - x2;
+        if (y2 > h) yChange = h - y2;
+        return new Vector2f((float) xChange, (float) yChange);
     }
 }
