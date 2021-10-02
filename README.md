@@ -75,5 +75,5 @@ This code will output this when ran:
 ## Forks
 Feel free to fork the project and make changes how you please etc. Please leave some credit in the original files. Thanks!
 
-## [Website](https://www.mattmx.com/) | [YouTube](https:/www.youtube.com/mattmx)
+## [Website](https://www.mattmx.com/) | [YouTube](https:/youtube.com/mattmx)
 @MattMX#0001
