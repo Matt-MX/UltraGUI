@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "ultragui",
+  "version": "${version}",
+  "name": "UltraGUI",
+  "description": "GUI library for fabric",
+  "authors": [
+    "MattMX"
+  ],
+  "contact": {
+    "website": "https://www.mattmx.com/"
+  },
+  "license": "MIT",
+  "icon": "assets/ultragui/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.mattmx.ultragui.Main"
+    ]
+  },
+  "mixins": [
+    "ultragui.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.11.6",
+    "fabric": "*",
+    "minecraft": "1.17.1"
+  }
+}

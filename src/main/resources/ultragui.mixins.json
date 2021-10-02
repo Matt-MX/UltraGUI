@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.mattmx.ultragui.example.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "MainMenuScreenMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
