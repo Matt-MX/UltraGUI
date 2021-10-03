@@ -1,3 +1,4 @@
+![Banner](src/main/resources/assets/ultragui/banner.png?raw=true "Banner")
 # UltraGUI
 
 A GUI library for FabricMC projects, with full customization!
