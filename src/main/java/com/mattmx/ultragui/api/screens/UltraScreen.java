@@ -2,8 +2,10 @@ package com.mattmx.ultragui.api.screens;
 
 import com.mattmx.ultragui.api.objects.QuadWindow;
 import com.mattmx.ultragui.api.primatives.UltraElement;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.*;
 

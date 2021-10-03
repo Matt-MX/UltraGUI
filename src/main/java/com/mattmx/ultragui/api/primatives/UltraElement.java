@@ -16,8 +16,10 @@ public abstract class UltraElement extends DrawableHelper {
     public Vector2f pos1;
     public Vector2f pos2;
     public String name = "null";
-    public boolean isMouseDown;
-    public boolean isMouseClicked;
+    public boolean isLMBPressed;
+    public boolean isRMBPressed;
+    public boolean isLMBClicked;
+    public boolean isRMBClicked;
     public boolean isDragging;
     public boolean isHovered;
     public boolean wasHovered;
@@ -27,8 +29,10 @@ public abstract class UltraElement extends DrawableHelper {
     public double mouseY;
     public Runnable onUnHover;
     public Runnable onHover;
-    public Runnable onMouseDown;
-    public Runnable onMouseUp;
+    public Runnable onLeftKeyDown;
+    public Runnable onLeftKeyReleased;
+    public Runnable onRightKeyDown;
+    public Runnable onRightKeyReleased;
     public Runnable onDrag;
     public Runnable onRender;
     public Runnable onMove;
@@ -38,22 +42,29 @@ public abstract class UltraElement extends DrawableHelper {
     // MOUSE HANDLE (HANDLE isHovered)
     public void handleMouse() {
     }
-    public void onMouseDown() {
-        if (onMouseDown == null) return;
-        Thread click = new Thread(onMouseDown);
-        click.start();
+    public void onRightKeyDown() {
+        if (onRightKeyDown == null) return;
+        new Thread(onRightKeyDown).start();
     }
 
-    public void onMouseUp() {
-        if (onMouseUp == null) return;
-        Thread up = new Thread(onMouseUp);
-        up.start();
+    public void onRightKeyReleased() {
+        if (onRightKeyReleased == null) return;
+        new Thread(onRightKeyReleased).start();
+    }
+
+    public void onLeftKeyDown() {
+        if (onLeftKeyDown == null) return;
+        new Thread(onLeftKeyDown).start();
+    }
+
+    public void onLeftKeyReleased() {
+        if (onLeftKeyReleased == null) return;
+        new Thread(onLeftKeyReleased).start();
     }
 
     public void onHover() {
         if (onHover == null) return;
-        Thread hover = new Thread(onHover);
-        hover.start();
+        new Thread(onHover).start();
     }
 
     public void onUnHover() {
@@ -63,14 +74,12 @@ public abstract class UltraElement extends DrawableHelper {
 
     public void onRender() {
         if (onRender == null) return;
-        Thread render = new Thread(onRender);
-        render.start();
+        new Thread(onRender).start();
     }
 
     public void onDrag() {
         if (onDrag == null) return;
-        Thread dar = new Thread(onDrag);
-        dar.start();
+        new Thread(onDrag).start();
     }
 
     public void onMove() {
@@ -82,22 +91,31 @@ public abstract class UltraElement extends DrawableHelper {
         mouseX = MinecraftClient.getInstance().mouse.getX() / MinecraftClient.getInstance().getWindow().getScaleFactor();
         mouseY = MinecraftClient.getInstance().mouse.getY() / MinecraftClient.getInstance().getWindow().getScaleFactor();
         this.handleMouse();
-        isMouseDown = GLFW.glfwGetMouseButton(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
-        if (isMouseDown && isHovered) wasHovered = true;
+        isLMBPressed = GLFW.glfwGetMouseButton(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_MOUSE_BUTTON_LEFT) == GLFW.GLFW_PRESS;
+        isRMBPressed = GLFW.glfwGetMouseButton(MinecraftClient.getInstance().getWindow().getHandle(), GLFW.GLFW_MOUSE_BUTTON_RIGHT) == GLFW.GLFW_PRESS;
+        if (isLMBPressed && isHovered) wasHovered = true;
         isDragging = wasHovered;
         if (isDragging){
             onDrag();
         } else oldpos1 = null;
         if (isHovered) onHover();
         else onUnHover();
-        if (isMouseDown && !isMouseClicked && isHovered) {
-            isMouseClicked = true;
-            onMouseDown();
+        if (isLMBPressed && !isLMBClicked && isHovered) {
+            isLMBClicked = true;
+            onLeftKeyDown();
         }
-        if (!isMouseDown) {
-            isMouseClicked = false;
+        if (isRMBPressed && !isRMBClicked && isHovered) {
+            isRMBClicked = true;
+            onRightKeyDown();
+        }
+        if (!isLMBPressed) {
+            isLMBClicked = false;
             wasHovered = false;
-            if (isHovered) onMouseUp();
+            if (isHovered) onLeftKeyReleased();
+        }
+        if (!isRMBPressed) {
+            isRMBClicked = false;
+            if (isHovered) onRightKeyReleased();
         }
         onRender();
         this.draw(matrices);
