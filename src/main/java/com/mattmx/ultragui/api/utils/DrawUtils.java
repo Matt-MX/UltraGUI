@@ -2,15 +2,22 @@ package com.mattmx.ultragui.api.utils;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector2f;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix4f;
+import net.minecraft.util.math.Vector4f;
+import org.lwjgl.opengl.GL;
+import org.lwjgl.opengl.GL11;
 
 import java.util.Arrays;
 import java.util.List;
 
-public class DrawUtils {
+import static org.lwjgl.opengl.GL11.*;
+
+public class DrawUtils<GLW_SMALL_ROUNDED_CORNER_SLICES> extends DrawableHelper {
     public static void outline (MatrixStack matrices, double x1, double y1, double x2, double y2, List<Float> col, int t) {
         outline(matrices, x1, y1, x2, y2, col.get(0), col.get(1), col.get(2), col.get(3), t);
     }
@@ -92,5 +99,92 @@ public class DrawUtils {
         if (x2 > w) xChange = w - x2;
         if (y2 > h) yChange = h - y2;
         return new Vector2f((float) xChange, (float) yChange);
+    }
+
+    public static void drawImage(Identifier i, double width, double height) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        MinecraftClient.getInstance().getTextureManager().bindTexture(i);
+        RenderSystem.clearColor(1.0F, 1.0F, 1.0F, 1.0F);
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE_COLOR);
+        bufferBuilder.vertex(0.0D, height, 0.0D).texture(0.0F, 0.0F).color(64, 64, 64, 255).next();
+        bufferBuilder.vertex(width, height, 0.0D).texture(0.0F, 0.0F).color(64, 64, 64, 255).next();
+        bufferBuilder.vertex(width, 0.0D, 0.0D).texture(0.0F, 0.0F).color(64, 64, 64, 255).next();
+        bufferBuilder.vertex(0.0D, 0.0D, 0.0D).texture(0.0F, 0.0F).color(64, 64, 64, 255).next();
+        tessellator.draw();
+    }
+
+    public static void drawCircle(MatrixStack matrices, Vector2f pos1, double radius, Vector4f color) {
+        drawCircle(matrices.peek().getModel(), pos1, radius, color);
+    }
+
+    public static void drawCircle(Matrix4f matrix, Vector2f pos1, double radius, Vector4f color) {
+        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        double origin_x = pos1.getX();
+        double origin_y = pos1.getY();
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
+        for (int i = 0; i <= 300; i++) {
+            double angle = 2 * Math.PI * i / 300;
+            double x = Math.cos(angle) * radius;
+            double y = Math.sin(angle) * radius;
+            bufferBuilder.vertex(matrix, (float)(origin_x + x), (float)(origin_y + y), 0.0F).color(color.getX(), color.getY(), color.getZ(), color.getW()).next();
+        }
+        bufferBuilder.end();
+        BufferRenderer.draw(bufferBuilder);
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
+    }
+    static void createRoundedCorners(Vector2f[] arr, int num) {
+        // Generate the corner vertexes
+        float slice = (float) Math.PI / 2 / num;
+        int i;
+        float a = 0;
+        for (i = 0; i < num; a += slice, ++i) {
+            arr[i] = new Vector2f((float) Math.cos(a), (float)Math.cos(a));
+        }
+    }
+
+    public static int GLW_SMALL_ROUNDED_CORNER_SLICES = 5;
+    public static Vector2f[] roundedCorners = new Vector2f[GLW_SMALL_ROUNDED_CORNER_SLICES];
+    public static void drawRoundedRecGradFill(Matrix4f matrix, Vector2f pos1, Vector2f pos2, float radius, Vector4f topCol, Vector4f botCol) {
+        createRoundedCorners(roundedCorners, GLW_SMALL_ROUNDED_CORNER_SLICES);
+        float width = pos2.getX() - pos1.getX();
+        float height = pos2.getY() - pos1.getY();
+        float left = pos1.getX();
+        float top = pos1.getY();
+        float bottom = pos1.getY() + height - 1;
+        float right = pos1.getX() + width - 1;
+        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        bufferBuilder.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
+        int i;
+        for (i = 0; i < GLW_SMALL_ROUNDED_CORNER_SLICES; i++) {
+            bufferBuilder.vertex(matrix, left + radius - radius * roundedCorners[i].getX(),
+                    bottom - radius + radius * roundedCorners[i].getY(),
+                    0.0f).color(botCol.getX(), botCol.getY(), botCol.getZ(), botCol.getW()).next();
+            bufferBuilder.vertex(matrix,left + radius - radius * roundedCorners[i].getX(),
+                    top + radius - radius * roundedCorners[i].getY(),
+                    0.0f).color(topCol.getX(), topCol.getY(), topCol.getZ(), topCol.getW()).next();
+        }
+        for (i = GLW_SMALL_ROUNDED_CORNER_SLICES - 1; i >=0; i--) {
+            bufferBuilder.vertex(matrix,right - radius + radius * roundedCorners[i].getX(),
+                    bottom - radius + radius * roundedCorners[i].getY(),
+                    0.0f).color(botCol.getX(), botCol.getY(), botCol.getZ(), botCol.getW()).next();
+            GL11.glColor4f(topCol.getX(), topCol.getY(), topCol.getZ(), topCol.getW());
+            bufferBuilder.vertex(matrix,right - radius + radius * roundedCorners[i].getX(),
+                    top + radius - radius * roundedCorners[i].getY(),
+                    0.0f).color(topCol.getX(), topCol.getY(), topCol.getZ(), topCol.getW()).next();
+        }
+        bufferBuilder.end();
+        BufferRenderer.draw(bufferBuilder);
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
     }
 }

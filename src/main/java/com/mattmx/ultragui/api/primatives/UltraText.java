@@ -25,7 +25,7 @@ public class UltraText extends UltraElement {
     }
 
     @Override
-    protected void draw(MatrixStack matrices) {
+    public void draw(MatrixStack matrices) {
         TextRenderer t = MinecraftClient.getInstance().textRenderer;
         int textWidth = t.getWidth(ColorUtils.chat(text));
         if (shadow) {

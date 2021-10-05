@@ -22,6 +22,7 @@ public class UltraTextInput extends UltraButton{
     public int maxInput = 999;
     public List<String> lastKeys = new ArrayList<>();
     public List<String> currentKeys = new ArrayList<>();
+    public Runnable onInput;
 
     public UltraTextInput(Vector2f pos1, Vector2f widhei, Vector4f col) {
         this.pos1 = pos1;
@@ -61,14 +62,15 @@ public class UltraTextInput extends UltraButton{
         if (isTyping) handleInputs();
         int padding = 1;
         Formatting f = Formatting.WHITE;
-        if (pos1.getX() +  MinecraftClient.getInstance().textRenderer.getWidth(input.substring(0, index)) >= pos2.getX() || input.length() >= maxInput) f = Formatting.RED;
-        DrawUtils.fill(matrices, pos1.getX() - padding, pos1.getY() - padding, pos2.getX() + padding, pos2.getY() + padding, ColorUtils.vector4fToColorAray(color));
+        if (pos1.getX() +  MinecraftClient.getInstance().textRenderer.getWidth(input) >= pos2.getX() || input.length() >= maxInput) f = Formatting.RED;
+        DrawUtils.fill(matrices, pos1.getX() - padding, pos1.getY() - padding, pos2.getX() + padding, pos2.getY() + padding, ColorUtils.vec4fTo4FloatArray(color));
         drawTextWithShadow(matrices, t,  new LiteralText(input).formatted(f), (int)pos1.getX(), (int)pos1.getY(), 0);
         if (drawIndex && isTyping) drawIndex(matrices);
         if (showPlaceholder && input.length() == 0) drawPlaceholder(matrices);
     }
 
     public void handleInputs() {
+        if (currentKeys.size() > 0) onInput();
         long handle = MinecraftClient.getInstance().getWindow().getHandle();
         boolean cap = GLFW.glfwGetKey(handle, GLFW.GLFW_KEY_LEFT_SHIFT) == GLFW.GLFW_PRESS
                 || GLFW.glfwGetKey(handle, GLFW.GLFW_KEY_CAPS_LOCK) == GLFW.GLFW_REPEAT;
@@ -83,7 +85,7 @@ public class UltraTextInput extends UltraButton{
         if (del && index + 1 <= input.length()) {
             input = input.substring(0, index) + input.substring(index + 1);
         }
-        if (pos1.getX() +  MinecraftClient.getInstance().textRenderer.getWidth(input.substring(0, index)) >= pos2.getX() || input.length() >= maxInput) return;
+        if (pos1.getX() +  MinecraftClient.getInstance().textRenderer.getWidth(input) >= pos2.getX() || input.length() >= maxInput) return;
         for (String s : currentKeys) {
             if (cap) input = input.substring(0, index) + s.toUpperCase() + input.substring(index);
             else input = input.substring(0, index) + s + input.substring(index);
@@ -117,5 +119,10 @@ public class UltraTextInput extends UltraButton{
     public void drawPlaceholder(MatrixStack matrices) {
         TextRenderer t = MinecraftClient.getInstance().textRenderer;
         drawTextWithShadow(matrices, t, ColorUtils.chat(placeHolder), (int)pos1.getX() + 2, (int)pos1.getY(), 0);
+    }
+
+    public void onInput() {
+        if (onInput == null) return;
+        new Thread(onInput).start();
     }
 }

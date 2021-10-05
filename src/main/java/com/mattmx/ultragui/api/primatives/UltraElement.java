@@ -36,11 +36,19 @@ public abstract class UltraElement extends DrawableHelper {
     public Runnable onDrag;
     public Runnable onRender;
     public Runnable onMove;
+    public Runnable onChangePos;
 
-    protected abstract void draw(MatrixStack matrices);
+    public void draw(MatrixStack matrices) {
+
+    }
 
     // MOUSE HANDLE (HANDLE isHovered)
     public void handleMouse() {
+    }
+
+    public void onChangePos() {
+        if (onChangePos == null) return;
+        new Thread(onChangePos).start();
     }
     public void onRightKeyDown() {
         if (onRightKeyDown == null) return;
@@ -136,7 +144,7 @@ public abstract class UltraElement extends DrawableHelper {
             return new Vector2f((float)movX, (float)movY);
     }
 
-    public final void changePos(Vector2f change) {
+    public void changePos(Vector2f change) {
         this.pos1 = new Vector2f(this.pos1.getX() + change.getX(),
                 this.pos1.getY() + change.getY());
         this.pos2 = new Vector2f(this.pos2.getX() + change.getX(),
@@ -147,7 +155,7 @@ public abstract class UltraElement extends DrawableHelper {
     public void updateChildrenPos(Vector2f change) {
         for (UltraElement e : children) {
             e.changePos(change);
-            //e.onMove();
+            e.onChangePos();
         }
     }
 }

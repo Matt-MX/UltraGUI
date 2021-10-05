@@ -1,5 +1,6 @@
 package com.mattmx.ultragui.example.mixin;
 
+import com.mattmx.ultragui.example.TestScreen;
 import com.mattmx.ultragui.example.gui.ExampleGUI;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.TitleScreen;
@@ -13,10 +14,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(TitleScreen.class)
 public abstract class MainMenuScreenMixin {
-    ExampleGUI scr = new ExampleGUI(MinecraftClient.getInstance().currentScreen);
-    public boolean w = true;
-    @Inject(at = @At("TAIL"), method = "render")
+    @Inject(at = @At("HEAD"), method = "render", cancellable = true)
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta, CallbackInfo ci) {
-        scr.render(matrices);
+        MinecraftClient.getInstance().setScreen(new TestScreen());
+        ci.cancel();
     }
 }

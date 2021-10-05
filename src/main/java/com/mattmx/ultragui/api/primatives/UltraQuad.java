@@ -1,6 +1,5 @@
 package com.mattmx.ultragui.api.primatives;
 
-import com.mattmx.ultragui.api.primatives.UltraElement;
 import com.mattmx.ultragui.api.utils.ColorUtils;
 import com.mattmx.ultragui.api.utils.DrawUtils;
 import net.minecraft.client.util.math.MatrixStack;
@@ -22,7 +21,7 @@ public class UltraQuad extends UltraElement {
     @Override
     public void draw(MatrixStack matrices) {
         if (!isShown) return;
-        DrawUtils.fill(matrices, pos1.getX(), pos1.getY(), pos2.getX(), pos2.getY(), ColorUtils.vector4fToColorAray(color));
+        DrawUtils.fill(matrices, pos1.getX(), pos1.getY(), pos2.getX(), pos2.getY(), ColorUtils.vec4fTo4FloatArray(color));
     }
 
     @Override

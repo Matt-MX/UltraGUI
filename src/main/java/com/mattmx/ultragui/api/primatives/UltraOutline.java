@@ -19,6 +19,6 @@ public class UltraOutline extends UltraQuad{
     @Override
     public void draw(MatrixStack matrices) {
         if (!isShown) return;
-        DrawUtils.outline(matrices, pos1.getX(), pos1.getY(), pos2.getX(), pos2.getY(), ColorUtils.vector4fToColorAray(color), t);
+        DrawUtils.outline(matrices, pos1.getX(), pos1.getY(), pos2.getX(), pos2.getY(), ColorUtils.vec4fTo4FloatArray(color), t);
     }
 }
