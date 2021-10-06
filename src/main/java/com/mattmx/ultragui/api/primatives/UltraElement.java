@@ -1,5 +1,6 @@
 package com.mattmx.ultragui.api.primatives;
 
+import com.mattmx.ultragui.api.utils.DrawUtils;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.util.math.MatrixStack;
@@ -135,6 +136,9 @@ public abstract class UltraElement extends DrawableHelper {
             }
             double movX = mouseX - oldpos1.getX();
             double movY = mouseY - oldpos1.getY();
+            Vector2f w = DrawUtils.isOffScreen(new Vector2f((float) (pos1.getX() + movX), (float)(pos1.getY() + movY)), new Vector2f((float)(pos2.getX() + movX), (float)(pos2.getY() + movY)));
+            movX = movX + w.getX();
+            movY = movY + w.getY();
             pos1 = new Vector2f((float) (pos1.getX() + movX),
                                 (float) (pos1.getY() + movY));
             pos2 = new Vector2f((float) (pos2.getX() + movX),

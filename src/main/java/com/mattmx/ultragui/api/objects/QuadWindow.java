@@ -2,6 +2,7 @@ package com.mattmx.ultragui.api.objects;
 
 import com.mattmx.ultragui.api.primatives.UltraElement;
 import com.mattmx.ultragui.api.primatives.UltraQuad;
+import com.mattmx.ultragui.api.utils.DrawUtils;
 import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.util.math.Vector4f;
 

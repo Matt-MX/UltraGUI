@@ -119,7 +119,8 @@ public class DrawUtils<GLW_SMALL_ROUNDED_CORNER_SLICES> extends DrawableHelper {
     }
 
     public static void drawCircle(Matrix4f matrix, Vector2f pos1, double radius, Vector4f color) {
-        BufferBuilder bufferBuilder = Tessellator.getInstance().getBuffer();
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
         double origin_x = pos1.getX();
         double origin_y = pos1.getY();
         RenderSystem.enableBlend();
@@ -127,17 +128,63 @@ public class DrawUtils<GLW_SMALL_ROUNDED_CORNER_SLICES> extends DrawableHelper {
         RenderSystem.defaultBlendFunc();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
-        for (int i = 0; i <= 300; i++) {
-            double angle = 2 * Math.PI * i / 300;
-            double x = Math.cos(angle) * radius;
-            double y = Math.sin(angle) * radius;
+        for (int i = 0; i <= 30; i++) {
+            double angle = 2 * Math.PI * i / 30;
+            double x = Math.sin(angle) * radius;
+            double y = Math.cos(angle) * radius;
             bufferBuilder.vertex(matrix, (float)(origin_x + x), (float)(origin_y + y), 0.0F).color(color.getX(), color.getY(), color.getZ(), color.getW()).next();
         }
-        bufferBuilder.end();
-        BufferRenderer.draw(bufferBuilder);
+        tessellator.draw();
         RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }
+
+    public static void drawQuarterCircle(Matrix4f matrix, Vector2f pos, double radius, double rot, Vector4f color) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        double origin_x = pos.getX();
+        double origin_y = pos.getY();
+        int points = 30;
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        bufferBuilder.begin(VertexFormat.DrawMode.TRIANGLE_FAN, VertexFormats.POSITION_COLOR);
+        bufferBuilder.vertex(matrix, (float)(origin_x), (float)(origin_y), 0.0F).color(color.getX(), color.getY(), color.getZ(), color.getW()).next();
+        for (int i = 0; i <= points; i++) {
+            double angle = (2 * (Math.PI / 4) * i / points) + rot;
+            double x = Math.sin(angle) * radius;
+            double y = Math.cos(angle) * radius;
+            bufferBuilder.vertex(matrix, (float)(origin_x + x), (float)(origin_y + y), 0.0F).color(color.getX(), color.getY(), color.getZ(), color.getW()).next();
+        }
+        tessellator.draw();
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
+    }
+
+    public static void drawQuarterCircleOutline(Matrix4f matrix, Vector2f pos, double radius, double rot, Vector4f color) {
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        double origin_x = pos.getX();
+        double origin_y = pos.getY();
+        int points = 30;
+        RenderSystem.enableBlend();
+        RenderSystem.disableTexture();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        bufferBuilder.begin(VertexFormat.DrawMode.LINES, VertexFormats.POSITION_COLOR);
+        RenderSystem.lineWidth(2f);
+        for (int i = 0; i <= points; i++) {
+            double angle = (2 * (Math.PI / 4) * i / points) + rot;
+            double x = Math.sin(angle) * radius;
+            double y = Math.cos(angle) * radius;
+            bufferBuilder.vertex(matrix, (float)(origin_x + x), (float)(origin_y + y), 0.0F).color(color.getX(), color.getY(), color.getZ(), color.getW()).next();
+        }
+        tessellator.draw();
+        RenderSystem.enableTexture();
+        RenderSystem.disableBlend();
+    }
+
     static void createRoundedCorners(Vector2f[] arr, int num) {
         // Generate the corner vertexes
         float slice = (float) Math.PI / 2 / num;
