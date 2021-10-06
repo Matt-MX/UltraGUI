@@ -70,6 +70,7 @@ publishing {
     repositories {
         // uncomment to publish to the local maven
         // mavenLocal()
+        maven {url 'https://jitpack.io'}
     }
 }
 wrapper {
