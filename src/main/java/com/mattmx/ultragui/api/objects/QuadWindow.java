@@ -11,6 +11,7 @@ import java.util.*;
 public class QuadWindow extends UltraQuad {
 
     public QuadWindow(Vector2f pos1, Vector2f widhei, Vector4f col) {
+        super();
         Vector2f pos2 = new Vector2f(widhei.getX() + pos1.getX(),
                 widhei.getY() + pos1.getY());
         this.isShown = true;
@@ -21,6 +22,7 @@ public class QuadWindow extends UltraQuad {
 
     @Override
     public void onDrag() {
+        if (!this.isThisTop()) return;
         Vector2f change = this.followMouse();
         updateChildrenPos(change);
     }

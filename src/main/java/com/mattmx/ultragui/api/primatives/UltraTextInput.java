@@ -25,6 +25,7 @@ public class UltraTextInput extends UltraButton{
     public Runnable onInput;
 
     public UltraTextInput(Vector2f pos1, Vector2f widhei, Vector4f col) {
+        super();
         this.pos1 = pos1;
         this.pos2 = new Vector2f(pos1.getX() + widhei.getX(), pos1.getY() + widhei.getY());
         this.color = col;

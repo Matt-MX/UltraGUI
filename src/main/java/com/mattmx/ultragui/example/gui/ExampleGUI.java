@@ -41,11 +41,11 @@ public class ExampleGUI extends UltraScreen {
         CustomSlider rSlider = new CustomSlider(new Vector2f(10f, 50f), new Vector2f(70f, 4), 0, 1, new Vector4f(0.066f, 0.529f, 0.874f, 1f), new Vector4f(1f, 1f, 1f, 1f));
         CustomSlider gSlider = new CustomSlider(new Vector2f(10f, 60f), new Vector2f(70f, 4), 0, 1, new Vector4f(0.066f, 0.529f, 0.874f, 1f), new Vector4f(1f, 1f, 1f, 1f));
         CustomSlider bSlider = new CustomSlider(new Vector2f(10f, 70f), new Vector2f(70f, 4), 0, 1, new Vector4f(0.066f, 0.529f, 0.874f, 1f), new Vector4f(1f, 1f, 1f, 1f));
-
         UltraRoundedRectangle w = new UltraRoundedRectangle(new Vector2f(11f, 86f), new Vector2f(10 + 69, 85 + 39), 9, new Vector4f(0.066f, 0.529f, 0.874f, 1f));
         UltraRoundedRectangle r = new UltraRoundedRectangle(new Vector2f(10f, 85f), new Vector2f(10 + 70, 85 + 40), 10, new Vector4f(1f, 1f, 1f, 1f));
         UltraRoundedRectangle r_bg = new UltraRoundedRectangle(new Vector2f(10f, 85f), new Vector2f(10 + 70, 85 + 20), 10, new Vector4f(0.066f, 0.529f, 0.874f, 0f));
         b.onLeftKeyDown = () -> {
+            if (!b.isThisTop()) return;
             background.isShown = !background.isShown;
             outline.isShown = background.isShown;
             input.isShown = background.isShown;
@@ -55,10 +55,12 @@ public class ExampleGUI extends UltraScreen {
             backgroundColor = new Vector4f((float)slider.currentVal, 0.5f, 0.5f, 1f);
         };
         r.onHover = () -> {
+            if (!r.isThisTop()) return;
             if (r_anim < 1f) r_anim = r_anim + 0.1f;
             w.color = new Vector4f(0.039f, 0.450f, 0.760f, 1f);
         };
         r.onUnHover = () -> {
+            if (!r.isThisTop()) return;
             if (r_anim > 0f) r_anim = r_anim - 0.1f;
             w.color = new Vector4f(0.066f, 0.529f, 0.874f, 1f);
         };

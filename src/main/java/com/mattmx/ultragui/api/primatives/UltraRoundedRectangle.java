@@ -12,6 +12,7 @@ public class UltraRoundedRectangle extends UltraQuad {
     public Vector4f outline_color = new Vector4f(1f, 1f, 1f, 1f);
 
     public UltraRoundedRectangle(Vector2f pos1, Vector2f pos2, double radius, Vector4f col) {
+        super();
         this.color = col;
         this.pos1 = pos1;
         this.pos2 = pos2;

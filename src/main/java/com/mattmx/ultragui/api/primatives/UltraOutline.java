@@ -10,6 +10,8 @@ public class UltraOutline extends UltraQuad{
     public int t;
 
     public UltraOutline(Vector2f pos1, Vector2f pos2, Vector4f col, int thickness) {
+        super();
+        this.isLayer = false;
         this.pos1 = pos1;
         this.pos2 = pos2;
         this.color = col;

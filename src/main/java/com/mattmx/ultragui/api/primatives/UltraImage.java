@@ -19,6 +19,7 @@ public class UltraImage extends UltraElement{
     private BufferedImage image = null;
 
     public UltraImage(String filepath, Vector2f pos1, Vector2f widhei) {
+        super();
         this.pos1 = pos1;
         this.pos2 = new Vector2f(pos1.getX() + widhei.getX(), pos1.getY() + widhei.getY());
         this.width = widhei.getX();

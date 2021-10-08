@@ -22,6 +22,7 @@ public class UltraSlider extends UltraElement {
     }
 
     public UltraSlider(Vector2f pos1, Vector2f widhei, double minVal, double maxVal, Vector4f backgroundCol, Vector4f sliderCol) {
+        super();
         this.pos1 = pos1;
         this.pos2 = new Vector2f(pos1.getX() + widhei.getX(), pos1.getY() + widhei.getY());
         background = new UltraQuad(pos1, pos2, backgroundCol);

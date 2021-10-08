@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class UltraElement extends DrawableHelper {
+    public static List<UltraElement> layers = new ArrayList<>();
     public List<UltraElement> children = new ArrayList<>();
     public Vector2f oldpos1 = null;
     public Vector2f pos1;
@@ -38,9 +39,14 @@ public abstract class UltraElement extends DrawableHelper {
     public Runnable onRender;
     public Runnable onMove;
     public Runnable onChangePos;
+    public boolean isLayer = true;
+
+    public UltraElement() {
+        layers.add(this);
+    }
 
     public void draw(MatrixStack matrices) {
-
+        layers.add(this);
     }
 
     // MOUSE HANDLE (HANDLE isHovered)
@@ -161,5 +167,23 @@ public abstract class UltraElement extends DrawableHelper {
             e.changePos(change);
             e.onChangePos();
         }
+    }
+
+    public static UltraElement getElementClicked() {
+        List<UltraElement> possible = new ArrayList<>();
+        for (UltraElement e : layers) {
+            if (e.isHovered && e.isLayer || e.isDragging && e.isLayer) {
+                possible.add(e);
+            }
+        }
+        if (possible.isEmpty()) return null;
+        return possible.get(possible.size() - 1);
+    }
+
+    public boolean isThisTop() {
+        //return true; //Testing
+        UltraElement e = getElementClicked();
+        if (e == null) return false;
+        return e.equals(this);
     }
 }

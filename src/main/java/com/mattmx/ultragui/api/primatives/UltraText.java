@@ -14,6 +14,7 @@ public class UltraText extends UltraElement {
     public boolean centered;
 
     public UltraText(String text, Vector2f pos1, boolean shadow, boolean centered) {
+        super();
         TextRenderer t = MinecraftClient.getInstance().textRenderer;
         int textWidth = t.getWidth(ColorUtils.chat(text));
         this.pos1 = pos1;

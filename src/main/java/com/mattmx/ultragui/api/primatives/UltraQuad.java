@@ -16,6 +16,7 @@ public class UltraQuad extends UltraElement {
     }
 
     public UltraQuad() {
+        super();
     }
 
     @Override

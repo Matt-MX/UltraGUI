@@ -9,6 +9,7 @@ public class UltraCircle extends UltraQuad {
     public double radius;
 
     public UltraCircle(Vector2f pos, double radius, Vector4f col) {
+        super();
         this.pos1 = pos;
         this.pos2 = new Vector2f(0, 0);
         this.radius = radius;
