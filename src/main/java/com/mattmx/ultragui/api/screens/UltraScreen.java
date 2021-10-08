@@ -13,7 +13,7 @@ public abstract class UltraScreen {
     public Screen parent;
     private List<UltraElement> elements = new ArrayList<>();
 
-    protected void init(MatrixStack matrices) {
+    public void init(MatrixStack matrices) {
         for (UltraElement element : elements) {
             element.init(matrices);
             if (element instanceof QuadWindow) {
