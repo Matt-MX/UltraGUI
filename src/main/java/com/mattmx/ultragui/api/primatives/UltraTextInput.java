@@ -12,7 +12,7 @@ import net.minecraft.util.Formatting;
 import net.minecraft.util.math.Vector4f;
 import org.lwjgl.glfw.GLFW;
 import java.util.*;
-public class UltraTextInput extends UltraButton{
+public class UltraTextInput extends UltraElement {
     public String input = "";
     public boolean isTyping = false;
     public boolean drawIndex = true;

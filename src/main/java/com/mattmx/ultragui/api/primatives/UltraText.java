@@ -17,6 +17,7 @@ public class UltraText extends UltraElement {
         super();
         TextRenderer t = MinecraftClient.getInstance().textRenderer;
         int textWidth = t.getWidth(ColorUtils.chat(text));
+        if (textWidth == 0) textWidth = 1;
         this.pos1 = pos1;
         this.pos2 = new Vector2f(pos1.getX() + textWidth,
                 pos1.getY() + t.fontHeight);

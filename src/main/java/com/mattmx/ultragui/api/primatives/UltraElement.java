@@ -46,7 +46,7 @@ public abstract class UltraElement extends DrawableHelper {
     }
 
     public void draw(MatrixStack matrices) {
-        layers.add(this);
+        
     }
 
     // MOUSE HANDLE (HANDLE isHovered)
