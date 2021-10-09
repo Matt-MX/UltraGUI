@@ -14,13 +14,15 @@ public abstract class UltraScreen {
     private List<UltraElement> elements = new ArrayList<>();
 
     public void init(MatrixStack matrices) {
-        for (UltraElement element : elements) {
-            element.init(matrices);
-            if (element instanceof QuadWindow) {
-                QuadWindow q = (QuadWindow) element;
-                if (!q.children.isEmpty()) {
-                    for (UltraElement c : q.children) {
-                        c.init(matrices);
+        if (!elements.isEmpty()) {
+            for (UltraElement element : elements) {
+                element.init(matrices);
+                if (element instanceof QuadWindow) {
+                    QuadWindow q = (QuadWindow) element;
+                    if (!q.children.isEmpty()) {
+                        for (UltraElement c : q.children) {
+                            c.init(matrices);
+                        }
                     }
                 }
             }
