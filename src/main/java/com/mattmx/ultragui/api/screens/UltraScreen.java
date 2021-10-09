@@ -18,8 +18,10 @@ public abstract class UltraScreen {
             element.init(matrices);
             if (element instanceof QuadWindow) {
                 QuadWindow q = (QuadWindow) element;
-                for (UltraElement c : q.children) {
-                    c.init(matrices);
+                if (!q.children.isEmpty()) {
+                    for (UltraElement c : q.children) {
+                        c.init(matrices);
+                    }
                 }
             }
         }

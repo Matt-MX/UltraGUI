@@ -7,15 +7,11 @@ import com.mattmx.ultragui.api.screens.UltraScreen;
 import com.mattmx.ultragui.api.utils.ColorUtils;
 import com.mattmx.ultragui.api.utils.DrawUtils;
 import com.mattmx.ultragui.example.gui.widget.CustomSlider;
-import net.fabricmc.loader.util.sat4j.core.Vec;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.client.util.math.Vector2f;
 import net.minecraft.util.math.Vector4f;
-
-import java.util.Vector;
-import java.util.concurrent.atomic.AtomicReference;
 
 /* # TODO (matt)
  * - Add layer system
