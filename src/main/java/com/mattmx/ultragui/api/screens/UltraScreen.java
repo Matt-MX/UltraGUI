@@ -41,4 +41,8 @@ public abstract class UltraScreen {
     public final void removeElement(UltraElement element) {
         elements.remove(element);
     }
+
+    public void render(MatrixStack matrices) {
+
+    }
 }
