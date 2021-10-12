@@ -56,4 +56,8 @@ public abstract class UltraScreen {
     public void render(MatrixStack matrices) {
 
     }
+
+    public void render(MatrixStack matrices, Screen screen) {
+
+    }
 }
